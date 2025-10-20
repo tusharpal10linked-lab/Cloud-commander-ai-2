@@ -6,9 +6,21 @@ from openai import OpenAI
 
 # Load environment
 load_dotenv()
-OPENAI_KEY = os.getenv("OPENAI_API_KEY")
+# OPENAI_KEY = os.getenv("OPENAI_API_KEY")
+# if not OPENAI_KEY:
+#     st.error("Missing OPENAI_API_KEY in .env")
+#     st.stop()
+
+# Load environment or Streamlit secrets
+load_dotenv()
+OPENAI_KEY = (
+    st.secrets.get("OPENAI_API_KEY")
+    if "OPENAI_API_KEY" in st.secrets
+    else os.getenv("OPENAI_API_KEY")
+)
+
 if not OPENAI_KEY:
-    st.error("Missing OPENAI_API_KEY in .env")
+    st.error("❌ Missing OPENAI_API_KEY in .env or Streamlit Secrets.")
     st.stop()
 
 # Initialize OpenAI
